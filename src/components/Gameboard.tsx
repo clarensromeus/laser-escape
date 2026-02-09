@@ -9,6 +9,8 @@ import useControls from "../hooks/useControls";
 import { isColliding, isCollidingWithTarget } from "../utils/collisions";
 import { levels } from "../utils/levels";
 import type { PlayerType, LaserType, TargetType } from "../types/game";
+import { sounds } from "../utils/sounds";
+import { useEffect } from "react";
 
 export default function GameBoard() {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -42,6 +44,18 @@ export default function GameBoard() {
     angle: (i * 25) % 360,
   }));
 
+  useEffect(() => {
+    if (started && !gameOver && !won) {
+      sounds.hum.play().catch(() => { });
+    } else {
+      sounds.hum.pause();
+      sounds.hum.currentTime = 0;
+    }
+    return () => {
+      sounds.hum.pause();
+    };
+  }, [started, gameOver, won]);
+
   useControls(setPlayer, boardRef);
 
   useGameLoop(() => {
@@ -50,12 +64,16 @@ export default function GameBoard() {
     // Check laser collisions
     lasers.forEach((laser) => {
       if (isColliding(player, laser)) {
+        sounds.hit.currentTime = 0;
+        sounds.hit.play().catch(() => { });
         setGameOver(true);
       }
     });
 
     // Check target collection
     if (isCollidingWithTarget(player, target)) {
+      sounds.hover.currentTime = 0;
+      sounds.hover.play().catch(() => { });
       setScore((s) => s + 1);
       // Spawn new target at random position
       setTarget({

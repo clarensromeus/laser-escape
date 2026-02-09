@@ -1,8 +1,10 @@
 export const sounds = {
-  hover: new Audio("/sounds/hover.mp3"),
-  hit: new Audio("/sounds/hit.mp3"),
-  hum: new Audio("/sounds/hum.mp3"),
+  hover: new Audio("https://codeskulptor-demos.commondatastorage.googleapis.com/pang/pop.mp3"),
+  hit: new Audio("https://codeskulptor-demos.commondatastorage.googleapis.com/GalaxyInvaders/explosion%2001.wav"),
+  hum: new Audio("http://commondatastorage.googleapis.com/codeskulptor-assets/sounddogs/thrust.mp3"),
 };
+
+
 
 sounds.hum.loop = true;
 sounds.hum.volume = 0.2;
